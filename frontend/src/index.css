@@ -1,1 +1,187 @@
 @import "tailwindcss";
+
+html, body, #root {
+  min-height: 100vh;
+  min-width: 100%;
+  font-family: Georgia, 'Times New Roman', Times, serif
+}
+
+.underline-animate {
+  @apply relative inline-block;
+}
+
+.underline-animate::after {
+  content: "";
+  @apply absolute left-0 -bottom-1 h-[2px] w-0 bg-current transition-all;
+  transition-duration: 300ms;
+}
+
+.underline-animate:hover::after {
+  width: 100%;
+}
+
+html.light body {
+    background-image: linear-gradient(to top, #54a6c9, #4ca8c9, #45aac8, #3dacc7, #35aec6, #2fb1ca, #28b4ce, #1eb7d2, #12bcdd, #04c0e8, #00c4f4, #08c8ff);
+  color: black;
+}
+
+html.dark body{
+background-image: linear-gradient(to top, #1f0f18, #21121e, #211525, #21192b, #1e1d32, #1b1e38, #171f3e, #0e2145, #081f4c, #061d53, #081a59, #0f155e);
+  color: white;
+}
+
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
+  height: 120px;
+  background: blueviolet;
+
+  border-top-left-radius: 100% 60px;
+  border-top-right-radius: 100% 60px;
+
+  z-index: 1000;
+}
+
+.snow-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none; /* 🔥 */
+}
+
+.snow-layer canvas {
+  pointer-events: none; /* 🔥 THIS is the real fix */
+}
+
+/* ======================================= */
+/* BASE STYLES (Desktop First) */
+/* ======================================= */
+
+.container {
+    margin: 100px auto;
+    max-width: 500px;
+    padding-bottom: 100px;
+    width: 100%;
+}
+
+.card-container {
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding-top: 20px;
+    margin-bottom: -120px; /* Base overlap */
+}
+
+.card {
+    /* Base Dimensions */
+    width: 300px;
+    height: 430px;
+    font-size: 164px;
+    padding: 8px;
+
+    /* Visual Styles (kept here) */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    background: #f5f5f5;
+    box-shadow:
+        0 0 1px hsl(0deg 0% 0% / 0.075), 
+        0 0 2px hsl(0deg 0% 0% / 0.075), 
+        0 0 4px hsl(0deg 0% 0% / 0.075), 
+        0 0 8px hsl(0deg 0% 0% / 0.075), 
+        0 0 16px hsl(0deg 0% 0% / 0.075);
+}
+
+/* MEDIA QUERY (Responsive Adjustments) */
+
+/* Styles for screen widths up to 600px (e.g., mobile devices) */
+@media (max-width: 600px) {
+    
+    .container {
+        /* Reduce margin on smaller screens */
+        margin: 50px 10px;
+        /* Allow it to use most of the screen width */
+        max-width: 95%;
+    }
+
+    .card-container {
+        /* Reduce the negative margin/overlap */
+        margin-bottom: -60px;
+        padding-top: 10px;
+    }
+
+    .card {
+        /* Reduce card size */
+        width: 220px; 
+        height: 310px; 
+        font-size: 110px;
+    }
+}
+
+.card-text {
+  line-height: 1.4;
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
+
+/* CSS */
+.button-53 {
+  background-color: #164a52;
+  border: 0 solid #E5E7EB;
+  box-sizing: border-box;
+  color: #000000;
+  display: flex;
+  font-family: ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+  font-size: 1rem;
+  font-weight: 700;
+  justify-content: center;
+  line-height: 1.75rem;
+  padding: .75rem 1.65rem;
+  position: relative;
+  text-align: center;
+  text-decoration: none #000000 solid;
+  text-decoration-thickness: auto;
+  width: 100%;
+  max-width: 460px;
+  position: relative;
+  cursor: pointer;
+  transform: rotate(-2deg);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-53:focus {
+  outline: 0;
+}
+
+.button-53:after {
+  content: '';
+  position: absolute;
+  border: 1px solid #000000;
+  bottom: 4px;
+  left: 4px;
+  width: calc(100% - 1px);
+  height: calc(100% - 1px);
+}
+
+.button-53:hover:after {
+  bottom: 2px;
+  left: 2px;
+}
+
+@media (min-width: 768px) {
+  .button-53 {
+    padding: .75rem 3rem;
+    font-size: 1.25rem;
+  }
+}

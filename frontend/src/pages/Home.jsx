@@ -7,19 +7,19 @@ import Footer from '../components/home/Footer.jsx';
 function Home() {
   return (
     <>
-        <div className="flex flex-col min-h-screen">
-      
-      <Navbar/>
-      <SnowScene />
+      <div className="flex flex-col min-h-screen">
 
-      <div className="flex-1">
-        <Hero/>
+        <Navbar />
+        <SnowScene />
+
+        <div className="flex-1">
+          <Hero />
+        </div>
+
+        <Footer />
       </div>
-      
-      <Footer />
-    </div>
     </>
-    
+
   );
 }
 

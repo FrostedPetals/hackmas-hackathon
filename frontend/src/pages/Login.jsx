@@ -17,13 +17,14 @@ const handleSubmit = async (e) => {
   const payload = { email, password };
 
   try {
-    const response = await fetch("http://localhost:5000/api/login", {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL
+}/api/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(payload),
-      credentials: "include", // IMPORTANT if using sessions/cookies
+      credentials: "include", // must use if using sessions/cookies
     });
 
     const data = await response.json();
@@ -46,7 +47,6 @@ const handleSubmit = async (e) => {
 
       <div className="flex w-full max-w-5xl flex-col md:flex-row bg-white rounded-xl shadow-lg overflow-hidden">
 
-        {/* Image */}
         <div className="md:w-1/2 h-64 md:h-auto">
           <img
             src="assets/loginch.jpeg"
@@ -55,7 +55,6 @@ const handleSubmit = async (e) => {
           />
         </div>
 
-        {/* Form */}
         <div className="md:w-1/2 bg-[#007E6E] p-8 md:p-12 flex items-center">
           <form onSubmit={handleSubmit} className="w-full">
 

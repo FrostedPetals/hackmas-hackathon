@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { pool } from "../db/index.js"; // assume you export pool from db.js
+import { pool } from "../db/index.js";
 import { ApiError } from "../utils/Response.utils.js";
 import { ApiResponse } from "../utils/Response.utils.js";
 import crypto from "crypto"
@@ -29,7 +29,7 @@ export async function handleSignup(req, res) {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const verificationToken = crypto.randomBytes(32).toString('hex')
-        // 4️⃣ Insert user
+
         await pool.query(
             `INSERT INTO users (name, email, password,verification_token)
        VALUES ($1, $2, $3,$4)
@@ -43,8 +43,6 @@ export async function handleSignup(req, res) {
             console.error("Email sending error:", err);
             throw err
         }
-        // 5️⃣ Respond
-        return ApiResponse(res, "Signup successful", {}, 201)
 
 
     } catch (err) {

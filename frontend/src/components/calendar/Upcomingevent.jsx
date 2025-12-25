@@ -1,17 +1,43 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
-function Upcomingevent() {
-    const [events, setEvents] = useState([]);
-    async function handleDelete(id) {
-        try {
-            const res = await fetch(`http://localhost:5000/api/calendar/${id}`, {
-                method: "DELETE",
-                credentials: "include"
-            })
-            if (!res.ok) throw new Error("Delete failed");
+import DeleteModal from './DeleteModal';
 
-            setEvents(prev => prev.filter(e => e.id != id))
-            console.log("Deleted event successfully")
+function Upcomingevent() {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedEventId, setSelectedEventId] = useState(null);
+    const openModal = (id) => {
+        setSelectedEventId(id);
+        setIsModalOpen(true);
+    };
+    const [events, setEvents] = useState([]);
+
+    function toLocal(dateStr) {
+        // Parse the full UTC timestamp
+        const utcDate = new Date(dateStr);
+
+        // Get the local calendar date 
+        const day = utcDate.getDate();
+        const month = utcDate.getMonth();
+        const year = utcDate.getFullYear();
+        return `${day}-${month + 1}-${year}`;
+
+    }
+
+    async function handleDelete() {
+        try {
+            if (selectedEventId) {
+                const res = await fetch(`${import.meta.env.VITE_BACKEND_URL
+                    }/api/calendar/${selectedEventId}`, {
+                    method: "DELETE",
+                    credentials: "include"
+                })
+                if (!res.ok) throw new Error("Delete failed");
+
+                setEvents(prev => prev.filter(e => e.id != selectedEventId))
+                setIsModalOpen(false); // Close modal
+                setSelectedEventId(null);
+                console.log("Deleted event successfully")
+            }
         } catch (err) {
             console.log("Could not delete event", err)
         }
@@ -20,7 +46,8 @@ function Upcomingevent() {
     useEffect(() => {
         async function fetchEvent() {
             try {
-                const res = await fetch("http://localhost:5000/api/calendar?day=14", {
+                const res = await fetch(`${import.meta.env.VITE_BACKEND_URL
+                    }/api/calendar?day=14`, {
                     method: "GET",
                     credentials: "include",
                 });
@@ -50,20 +77,28 @@ function Upcomingevent() {
         fetchEvent()
     }, [])
     return (
-        <><h3 className='text-2xl italic '>Upcoming events</h3>
-            <div className='bg-pink-200 flex-1 overflow-y-scroll'>
+        <><DeleteModal
+            isOpen={isModalOpen}
+            onCancel={() => setIsModalOpen(false)}
+            onConfirm={handleDelete}
+        />
+            <h3 className='text-2xl italic '>Upcoming events</h3>
+            <div className='border-1 max-h-[200px] rounded-sm p-1 flex-1 overflow-y-auto'>
 
                 <ul className='list-disc text-xl'>
                     {events.map((e, index) => {
                         const daysAway = Math.ceil(
                             (new Date(e.date) - new Date()) / (1000 * 60 * 60 * 24)
+
                         );
                         return (
                             <li key={index}>
                                 <span className={`${daysAway < 3 ? "text-red-600 animate-ping" : ""} ${daysAway >= 3 && daysAway < 7 ? "text-yellow-500 animate-pulse" : ""}`}>
-                                    🎁 <b>{e.title}</b> {"on "}{e.date.slice(0, 10)}{' ['} {e.description}{']'}
+                                    🎁 <b>{e.title}</b> {"on "}{toLocal(e.date)}
+                                    {' ['} {e.description}{']'}
                                 </span>
-                                <button onClick={() => handleDelete(e.id)} className='hover:opacity-40 transition:opacity duration:400' title='Delete'>🗑️</button>
+                                {/*<button onClick={() => handleDelete(e.id)} className='hover:opacity-40 transition:opacity duration:400' title='Delete'>🗑️</button>*/}
+                                <button onClick={() => openModal(e.id)} className='hover:opacity-40 transition:opacity duration:400' title='Delete'>🗑️</button>
                             </li>
                         );
                     })}

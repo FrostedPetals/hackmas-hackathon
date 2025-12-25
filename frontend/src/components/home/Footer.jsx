@@ -23,10 +23,10 @@ function Footer() {
         "
         style={{ backgroundImage: "url('/assets/snowtexture.jpg')" }}
       >
-        {/* Content wrapper */}
+        
         <div className="w-full flex items-center justify-between">
           
-          {/* Snowman */}
+          
           <img
             src="/assets/snowman.png"
             alt="snowman"
@@ -38,7 +38,7 @@ function Footer() {
             "
           />
 
-          {/* Social Icons */}
+          
           <div className="flex flex-wrap p-2 bg-black rounded-md gap-4 sm:gap-6">
 
 

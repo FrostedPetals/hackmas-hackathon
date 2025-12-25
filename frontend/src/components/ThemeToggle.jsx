@@ -4,6 +4,8 @@ import { ThemeContext } from "../contexts/ThemeProvider.jsx";
 export default function ThemeToggle() {
   const { theme, toggleTheme } = useContext(ThemeContext);
   useEffect(() => {
+    
+    localStorage.setItem("theme", theme);
     document.documentElement.classList.remove("light", "dark");
     document.documentElement.classList.add(theme);
   }, [theme]);

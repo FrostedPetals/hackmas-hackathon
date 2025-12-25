@@ -1,5 +1,5 @@
 import { pool } from "./db/index.js";
-
+//one time script!
 async function createTables() {
   try {
     // Users table
@@ -12,7 +12,6 @@ async function createTables() {
       );
     `);
     
-    // Optionally: session table for connect-pg-simple
     await pool.query(`
       CREATE TABLE IF NOT EXISTS "session_data" (
   "sid" varchar NOT NULL COLLATE "default" PRIMARY KEY,

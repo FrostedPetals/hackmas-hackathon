@@ -16,7 +16,8 @@ export default function EventForm() {
     try {
       setLoading(true);
 
-      const res = await fetch("http://localhost:5000/api/calendar", {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL
+        }/api/calendar`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -33,7 +34,7 @@ export default function EventForm() {
         throw new Error("Failed to create event");
       }
 
-      // optional: reset form
+      // reset form
       setDay("");
       setMonth("");
       setYear("");
@@ -51,7 +52,7 @@ export default function EventForm() {
   return (
     <form onSubmit={handleSubmit} className="flex-1 rounded-xl p-4 space-y-4">
 
-      {/* Date */}
+ 
       <div>
         <label className="block mb-1 font-semibold">Date *</label>
         <div className="grid grid-cols-3 gap-2">
@@ -88,7 +89,6 @@ export default function EventForm() {
         </div>
       </div>
 
-      {/* Title */}
       <div>
         <label className="block mb-1 font-semibold">Title *</label>
         <input
@@ -103,7 +103,6 @@ export default function EventForm() {
         />
       </div>
 
-      {/* Description */}
       <div>
         <label className="block mb-1 font-semibold">Description</label>
         <textarea
@@ -119,7 +118,7 @@ export default function EventForm() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full rounded-lg bg-blue-600 py-2 font-semibold text-white hover:bg-blue-700 disabled:opacity-50"
+        className="button-89"
       >
         {loading ? "Adding..." : "Add new event"}
       </button>

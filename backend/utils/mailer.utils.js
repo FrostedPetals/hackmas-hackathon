@@ -4,10 +4,8 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-/**
- * Sends a verification email using the Brevo REST API.
- * This replaces the Nodemailer transporter logic.
- */
+// Sends a verification email using the Brevo REST API.
+ 
 export async function verifyEmail(to, token) {
   const verificationLink = `${process.env.BACKEND_URL}/api/verify-email?token=${token}`;
 
@@ -32,7 +30,7 @@ export async function verifyEmail(to, token) {
       },
       {
         headers: {
-          "api-key": process.env.BREVO_API_KEY, // Use your standard API Key here
+          "api-key": process.env.BREVO_API_KEY, 
           "Content-Type": "application/json",
           "Accept": "application/json"
         }
@@ -42,11 +40,11 @@ export async function verifyEmail(to, token) {
     console.log("Verification mail sent successfully ✅", response.data.messageId);
     return response.data;
   } catch (err) {
-    // Improved error logging to see exactly why it failed
+    
     console.error(
       "Could not send verification link:", 
       err.response?.data || err.message
     );
-    throw err; // Re-throw so your calling function knows it failed
+    throw err; 
   }
 }

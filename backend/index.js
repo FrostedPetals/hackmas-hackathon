@@ -1,22 +1,37 @@
 import express from "express";
 import cors from "cors"
 import session from "express-session";
+import multer from "multer";
 import pgSession from "connect-pg-simple"
 import { pool } from "./db/index.js";
 import { handleLogin,handleSignup,handleLogout } from "./controllers/auth.controllers.js";
 import requireLogin from "./middlewares/requireLogin.js";
 import { ApiError, ApiResponse } from "./utils/Response.utils.js";
-
+import {GoogleGenAI} from '@google/genai';
 import dotenv from "dotenv";
+import rateLimit from 'express-rate-limit';
+
+
 
 dotenv.config();
-
 const app=express()
+
 const PORT = process.env.PORT || 5000;
 const HOST = process.env.HOST || "localhost";
 const BACKEND_URL = process.env.BACKEND_URL || `http://${HOST}:${PORT}`;
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const ai = new GoogleGenAI({apiKey: GEMINI_API_KEY});
 
-
+const userQuotaLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour window
+  max: 2, // Limit each user to 2 summaries per hour
+  message: { 
+    error: "User Quota Exceeded", 
+    message: "You can only summarize 2 notes per hour to keep it fair for everyone." 
+  },
+  standardHeaders: true, 
+  legacyHeaders: false,
+});
 // to enable requests with json and urlencoded payloads
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
@@ -72,7 +87,6 @@ app.post('/api/logout',(req,res)=>{
   handleLogout(req,res);
 })
 
-//to check if user is currently logged in or not
 app.get("/api/me", async (req, res) => {
   if (!req.session || !req.session.userId) {
     return ApiError(res, "Not logged in", { loggedIn: false }, 401);
@@ -99,26 +113,7 @@ app.get("/api/me", async (req, res) => {
   });
 });
 
-/*
-app.get("/api/verify-email/:token", async (req, res) => {
-  //const { token } = req.query;
-  const { token } = req.params;
-  console.log("Attempting verification for token:", token); // DEBUG LOG
-      if (!token) {
-      return ApiError(res, "Missing token", "Verification failed", 400);
-    }
-  const result = await pool.query(
-    "UPDATE users SET email_verified = true, verification_token = NULL WHERE verification_token = $1 RETURNING id, email_verified",
-    [token]
-  );
 
-  if (result.rows.length === 0) {
-    return ApiError(res, "Invalid or expired token", "Verification failed", 400);
-  }
-
-  return ApiResponse(res, "Email verified successfully", { verified: true });
-});
-*/
 app.get("/api/calendar", requireLogin, async (req, res) => {
   try {
     const userId = req.session.userId;
@@ -127,7 +122,7 @@ app.get("/api/calendar", requireLogin, async (req, res) => {
     let result;
 
     if (!day) {
-      // Fetch all events
+      // fetch all events
       result = await pool.query(
         `SELECT id, title, description,event_date::date AS event_date
          FROM calendar_events
@@ -136,7 +131,7 @@ app.get("/api/calendar", requireLogin, async (req, res) => {
         [userId]
       );
     } else {
-      // Fetch events within the next 'day' days
+      // fetch events within the next 'day' days
       result = await pool.query(
         `SELECT id, title, description,event_date::date AS event_date
          FROM calendar_events
@@ -210,7 +205,6 @@ app.get("/api/verify-email", async (req, res) => {
 
     const token = decodeURIComponent(rawToken);
 
-    // 🔍 DEBUG MATCH
     const check = await pool.query(
       "SELECT id FROM users WHERE verification_token = $1",
       [token]
@@ -270,7 +264,49 @@ app.use("/api/tree", requireLogin, async (req, res) => {
   }
 });
 
-//ADD HEALTH CHECKS ☠️
+const upload = multer({
+  storage: multer.memoryStorage(),
+});
+
+//imp
+app.post("/api/summarize", requireLogin, upload.array("pics",5), async (req,res)=>{
+  try{
+    if (!req.files || req.files.length === 0){
+      return ApiError(res,"Upload at least 1 image","Summarization canceled",400);
+    }
+
+    const contents = req.files.map(file => ({
+      inlineData: {
+        mimeType: file.mimetype,
+        data: file.buffer.toString("base64")
+      }
+    }));
+
+    // Add instruction as text
+    contents.push({
+      text: "Please read these handwritten notes and summarize them."
+    });
+
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents,
+    });
+
+    const summary = response.text || "No summary returned";
+
+    return ApiResponse(res,"Summarization complete",summary);
+
+
+  } catch(err){
+    console.error(err);
+    if (err.message.includes("429") || err.message.includes("quota")) {
+    
+    return ApiError(res,"The daily free AI credits (20/20) are exhausted. Please come back tomorrow!","Global limit reached",429)
+  }
+    return ApiError(res,"Could not process images",null,500);
+  }
+});
+
 
 
 app.listen(PORT,()=>{

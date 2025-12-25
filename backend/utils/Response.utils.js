@@ -1,3 +1,4 @@
+//standardized error and response
 export const ApiError=(res,msg="Something went wrong",code="SERVER_ERROR",statusCode)=>{
     return res.status(statusCode).json({
             status: "error",

@@ -2,11 +2,10 @@ import { motion } from "framer-motion"
 import PropTypes from 'prop-types'; 
 import React from "react"
 
-// 2. Removed all style constant definitions (container, card, cardContainer, splash)
-
+//function for the pop up cards in the home section(v important,go through it)
 export default function Hero() {
     return (
-        // Replaced style={container} with className="container"
+        
         <div className="container">
             {Info.map(([emoji, hueA, hueB], i) => (
                 <InfoCard i={i} emoji={emoji} hueA={hueA} hueB={hueB} key={emoji} />
@@ -18,26 +17,23 @@ export default function Hero() {
 function InfoCard({ emoji, hueA, hueB, i }) {
     const background = `linear-gradient(306deg, ${hueA}, ${hueB})`
 
-    // The transformOrigin is tied to the card's rotation, so we keep it here.
     const cardTransformOrigin = { transformOrigin: "10% 60%" }
 
     return (
         <motion.div
-            // Replaced style={cardContainer} with className="card-container"
             className={`card-container card-container-${i}`} 
             initial="offscreen"
             whileInView="onscreen"
             viewport={{ amount: 0.8 }}
         >
-            {/* Kept dynamic background inline style */}
+            
             <div className="splash" style={{ ...cardSplash, background,boxShadow: "0 0 12px rgb(255, 255, 255)"
  }} />
             
             <motion.div 
-                // Replaced style={card} with className="card"
                 className="card" 
                 variants={cardVariants}
-                style={cardTransformOrigin} // Applied the transform origin inline
+                style={cardTransformOrigin} 
             >
                 
   <p className="card-text text-[1rem] md:text-[1.5rem]">{emoji}</p>
@@ -46,7 +42,7 @@ function InfoCard({ emoji, hueA, hueB, i }) {
     )
 }
 
-// ... PropTypes and Animation Variants remain the same ...
+
 
 InfoCard.propTypes = {
     emoji: PropTypes.string.isRequired,

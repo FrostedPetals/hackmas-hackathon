@@ -3,10 +3,9 @@ import { pool } from "./db/index.js";
 
 async function deleteTables() {
   try {
-    // Drop session table first (because users may reference it later)
+    // Drop session table first 
     await pool.query(`DROP TABLE IF EXISTS "session_data";`);
     
-    // Drop users table
     await pool.query(`DROP TABLE IF EXISTS users;`);
 
     console.log("Tables deleted successfully");

@@ -1,8 +1,7 @@
 import { useState } from 'react'
-import './App.css'
-import Navbar from './components/home/Navbar.jsx'
 import { Routes,Route } from 'react-router'
 import Calendar from './pages/Calendar'
+import Tree from './pages/Tree.jsx'
 import Profile from './components/Profile'
 import Signup from './pages/Signup'
 import Login from './pages/Login'
@@ -17,6 +16,7 @@ function App() {
       <Route index element={<Home />} />
       <Route path="/calendar" element={<ProtectedRoute><Calendar/></ProtectedRoute>}/>
       <Route path="/notes" element={<ProtectedRoute><Notes/></ProtectedRoute>}/>
+      <Route path="/tree" element={<ProtectedRoute><Tree/></ProtectedRoute>}/>
       <Route path="/signup" element={<Signup/>}/>
       <Route path="/login" element={<Login/>}/>
       <Route path="/profile" element={<Profile/>}/>

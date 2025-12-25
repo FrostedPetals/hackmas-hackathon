@@ -39,6 +39,7 @@ const userQuotaLimiter = rateLimit({
   standardHeaders: true, 
   legacyHeaders: false,
 });
+
 // to enable requests with json and urlencoded payloads
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
@@ -315,7 +316,6 @@ app.post("/api/summarize", requireLogin,userQuotaLimiter, upload.array("pics",5)
     return ApiError(res,"Could not process images",null,500);
   }
 });
-
 
 
 app.listen(PORT,()=>{

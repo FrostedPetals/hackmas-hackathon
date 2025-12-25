@@ -4,6 +4,12 @@ import axios from "axios";
 
 //dotenv.config();
 
+const env = process.env.NODE_ENV || 'development';
+if (env !== 'production') {
+  await import('dotenv/config')
+}
+
+
 // Sends a verification email using the Brevo REST API.
  
 export async function verifyEmail(to, token) {

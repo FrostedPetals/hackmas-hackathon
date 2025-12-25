@@ -8,6 +8,12 @@ import { verifyEmail } from "../utils/mailer.utils.js";
 
 //dotenv.config();
 
+const env = process.env.NODE_ENV || 'development';
+if (env !== 'production') {
+  await import('dotenv/config')
+}
+
+
 export async function handleSignup(req, res) {
     try {
         const { name, email, password } = req.body;

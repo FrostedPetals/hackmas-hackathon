@@ -22,7 +22,7 @@ Link:
 
 ## Installation
 
-```bash
+
 git clone https://github.com/FrostedPetals/hackmas-hackathon.git
 cd backend
 npm install

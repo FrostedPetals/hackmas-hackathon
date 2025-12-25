@@ -22,12 +22,15 @@ const BACKEND_URL = process.env.BACKEND_URL || `http://${HOST}:${PORT}`;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const ai = new GoogleGenAI({apiKey: GEMINI_API_KEY});
 
+
+
 const userQuotaLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000, // 1 hour window
+  windowMs: 60 * 60 * 1000, //1 hr window
   max: 2, // Limit each user to 2 summaries per hour
+  keyGenerator: (req) => req.session.userId || req.ip, // Limits by User ID instead of just IP
   message: { 
     error: "User Quota Exceeded", 
-    message: "You can only summarize 2 notes per hour to keep it fair for everyone." 
+    message: "You can only summarize 2 notes per hour." 
   },
   standardHeaders: true, 
   legacyHeaders: false,
@@ -51,6 +54,8 @@ app.use(cors({
 
 const PgSession = pgSession(session);
 
+app.set("trust proxy", 1); //imp for Render
+
 app.use(session({
   store: new PgSession({
     pool: pool,
@@ -69,7 +74,7 @@ app.use(session({
     httpOnly: true,
     maxAge: 5 * 60 * 60 * 1000, // 5 hours
     secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    sameSite: process.env.NODE_ENV === "production"?"none": "lax",
   },
 }));
 
@@ -269,7 +274,7 @@ const upload = multer({
 });
 
 //imp
-app.post("/api/summarize", requireLogin, upload.array("pics",5), async (req,res)=>{
+app.post("/api/summarize", requireLogin,userQuotaLimiter, upload.array("pics",5), async (req,res)=>{
   try{
     if (!req.files || req.files.length === 0){
       return ApiError(res,"Upload at least 1 image","Summarization canceled",400);

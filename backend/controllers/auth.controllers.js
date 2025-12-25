@@ -3,10 +3,10 @@ import { pool } from "../db/index.js";
 import { ApiError } from "../utils/Response.utils.js";
 import { ApiResponse } from "../utils/Response.utils.js";
 import crypto from "crypto"
-import dotenv from "dotenv";
+//import dotenv from "dotenv";
 import { verifyEmail } from "../utils/mailer.utils.js";
 
-dotenv.config();
+//dotenv.config();
 
 export async function handleSignup(req, res) {
     try {

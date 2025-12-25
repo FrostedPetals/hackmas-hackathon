@@ -8,12 +8,16 @@ import { handleLogin,handleSignup,handleLogout } from "./controllers/auth.contro
 import requireLogin from "./middlewares/requireLogin.js";
 import { ApiError, ApiResponse } from "./utils/Response.utils.js";
 import {GoogleGenAI} from '@google/genai';
-import dotenv from "dotenv";
+
 import rateLimit from 'express-rate-limit';
 
 
+const env = process.env.NODE_ENV || 'development';
+if (env !== 'production') {
+  await import('dotenv/config')
+}
 
-dotenv.config();
+//dotenv.config();
 const app=express()
 
 const PORT = process.env.PORT || 5000;

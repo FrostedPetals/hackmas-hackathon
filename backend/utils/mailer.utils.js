@@ -1,8 +1,8 @@
 
 import axios from "axios";
-import dotenv from "dotenv";
+//import dotenv from "dotenv";
 
-dotenv.config();
+//dotenv.config();
 
 // Sends a verification email using the Brevo REST API.
  

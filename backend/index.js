@@ -54,6 +54,7 @@ app.use((req,res,next)=>{
 //very-important to initialize cors and allow credentials so that cookies can be sent between frontend and backend
 app.use(cors({
   origin: process.env.BASE_URL,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,
 }));
 

@@ -39,7 +39,7 @@ function Footer() {
           />
 
           
-          <div className="flex flex-wrap p-2 bg-black rounded-md gap-4 sm:gap-6">
+          <div className="flex flex-wrap p-2 bg-blue-400 rounded-md gap-4 sm:gap-6">
 
 
             <a

@@ -59,7 +59,7 @@ export default function Navbar() {
             <>
               <li>
                 <Link to="/profile">
-                  <div title="Profile" className="relative h-10 w-10 rounded-full bg-pink-300 cursor-pointer p-1 border border-amber-200 hover:opacity-70 transition-all overflow-hidden">
+                  <div title="Profile" className="relative h-10 w-10 rounded-full cursor-pointer p-1 shadow-[0_0_5px_rgba(255,255,255,0.6)] hover:opacity-70 transition-all overflow-hidden">
                     {userinfo ? (
                       <img
                         src={`https://api.dicebear.com/7.x/shapes/svg?seed=${encodeURIComponent(
@@ -105,7 +105,7 @@ export default function Navbar() {
           {loggedin && (
             <>
               <li ><Link to="/profile">
-                <div title="Profile" className="relative h-10 w-10 rounded-full bg-pink-300 cursor-pointer p-1 border border-amber-200 hover:opacity-70 transition-all overflow-hidden">
+                <div title="Profile" className="relative h-10 w-10 rounded-full cursor-pointer p-1 shadow-[0_0_5px_rgba(255,255,255,0.6)] hover:opacity-70 transition-all overflow-hidden">
                   {userinfo ? (
                     <img
                       src={`https://api.dicebear.com/7.x/shapes/svg?seed=${encodeURIComponent(

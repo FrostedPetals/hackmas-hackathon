@@ -78,7 +78,7 @@ function Profile() {
           </div>
         </aside>
 
-        <main className="ml-4">
+        <main className="ml-4 text-[#278e3d]">
           <ul>
             <li><b>User:</b> {userinfo.data.user.name}</li>
             <li><b>Email:</b> {userinfo.data.user.email}</li>
@@ -87,7 +87,7 @@ function Profile() {
 
       </div>
       <div className="block flex justify-center m-3 ">
-        <div className="max-h-screen overflow-y-auto mt-6 w-full max-w-xl rounded-2xl bg-white/90 p-5 shadow-lg backdrop-blur">
+        <div className="max-h-screen overflow-y-auto mt-6 w-full max-w-xl rounded-2xl bg-gray-300 p-5 shadow-lg backdrop-blur">
           <p className="mb-4 text-lg font-semibold text-gray-800">
             You have{" "}
             <span className="text-green-700">{events.length}</span>{" "}

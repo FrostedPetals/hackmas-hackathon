@@ -159,9 +159,9 @@ export default function Tree() {
         </div>
         <div className="flex-1">
 
-          <h2 className="text-xl md:text-2xl">Drag and drop to decorate the tree!</h2>
-          <h3>Resize and move ornaments as you wish.</h3>
-          <h3>Download your decorated tree and share further.</h3>
+          <h2 className="text-xl md:text-2xl text-blue-500"><b>Drag and drop to decorate the tree!</b></h2>
+          <h3 className=" text-blue-500">Resize and move ornaments as you wish.</h3>
+          <h3 className=" text-blue-500">Download your decorated tree and share further.</h3>
           <button onClick={() => { setItems([]) }} className="button-89 m-2">Clear tree</button>
         </div>
 

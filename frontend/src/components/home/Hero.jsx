@@ -36,7 +36,7 @@ function InfoCard({ emoji, hueA, hueB, i }) {
                 style={cardTransformOrigin} 
             >
                 
-  <p className="card-text text-[1rem] md:text-[1.5rem]">{emoji}</p>
+  <p className="card-text text-blue-500 text-[1rem] md:text-[1.5rem]">{emoji}</p>
             </motion.div>
         </motion.div>
     )

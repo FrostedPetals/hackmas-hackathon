@@ -318,6 +318,17 @@ app.post("/api/summarize", requireLogin,userQuotaLimiter, upload.array("pics",5)
   }
 });
 
+//health-check
+app.get("/api/health",async(req,res)=>{
+  try{
+    await pool.query("SELECT 1")
+    return ApiResponse(res,"DB and server healthy",null,200)
+  }catch(err){
+    console.log("Server/DB unreachable",err.message)
+    return ApiError(res,"Connection failed for now","Please wait",500)
+  }
+})
+
 
 app.listen(PORT,()=>{
   console.log(`Server listening on port ${PORT}: ${BACKEND_URL}`)

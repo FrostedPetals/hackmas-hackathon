@@ -57,7 +57,7 @@ export default function Signup() {
 
           <div className="md:w-1/2 h-64 md:h-auto">
             <img
-              src="public/assets/signch.jpg"
+              src="public/assets/signup.jpg"
               alt="signup_image"
               className="h-full w-full object-cover"
             />

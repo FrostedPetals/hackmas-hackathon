@@ -299,7 +299,7 @@ app.post("/api/summarize", requireLogin,userQuotaLimiter, upload.array("pics",5)
     });
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-2.5-flash-lite",
       contents,
     });
 

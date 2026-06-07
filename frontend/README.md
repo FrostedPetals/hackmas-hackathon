@@ -2,9 +2,26 @@
 
 A students-first winter(Christmas) themed web platform to help convert images to summarized text, mark important dates on a calendar and showcase upcoming events wrt how far away they are and a fun section to decorate a Christmas tree from a collection of decorations and then download the finished tree image.
 
-## Demo
+## Docker demo
 
-Link: 
+
+``` bash
+docker compose up --build -d
+docker compose exec backend node createTables.js 
+```
+(1st build to set up tables from file in backend container)
+
+```bash
+docker compose up -d
+docker compose down
+```
+(regular use)
+
+```bash
+docker compose down -v
+```
+(to clear database tables)
+
 
 ## Tech Stack
 
@@ -113,4 +130,6 @@ frontend/
 
 ## Notes
 
-Try refreshing the page in case any expected changes were not visible.
+- Try refreshing the page in case any expected changes were not visible.
+- In order to verify email after signup, it's probable that the email came into the 'Spam' folder of your email provider. Take care to check.
+- Use on laptop for best experience.
